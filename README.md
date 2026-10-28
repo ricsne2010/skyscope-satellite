@@ -3,7 +3,7 @@
 # SkyScope Satellite
 
 **A 4.3″ display that mirrors your [SkyScope](https://github.com/ricsne2010/skyscope) radar.**
-A Project Moon Pi project.
+**Designed and Created by Project Moon Pi**
 
 SkyScope does the work on a Raspberry Pi (data, filters, map); the Satellite
 asks it for the picture once a second over Wi-Fi and draws it, moving the
@@ -97,6 +97,11 @@ Satellite does no geography: it scales, moves and draws.
 
 ## Credits and licence
 
-MIT licence (see [LICENSE](LICENSE)). Libraries: LovyanGFX (FreeBSD),
-WiFiManager (MIT), ArduinoJson (MIT). The Project Moon Pi name and logo are not
-covered by the licence. Not for navigation.
+MIT licence (see [LICENSE](LICENSE)). Radar, map and aircraft data come from
+your [SkyScope](https://github.com/ricsne2010/skyscope) (see its credits).
+Libraries: LovyanGFX (FreeBSD), with its GNU FreeFont text (GPL with font
+exception); WiFiManager (MIT); ArduinoJson (MIT); the Espressif Arduino core
+(LGPL 2.1), built with PlatformIO (Apache 2.0). Built with
+[Claude Code](https://claude.com/claude-code) (Anthropic): designed, written and
+tested with Claude. The Project Moon Pi name and logo are not covered by the
+licence. Not for navigation.

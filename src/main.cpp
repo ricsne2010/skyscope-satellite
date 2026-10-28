@@ -1,6 +1,6 @@
 // SkyScope Satellite: a small display that mirrors a SkyScope Pi's radar.
 // The Pi does the work (data, filters, map); this draws what it sends.
-// Board: Sunton ESP32-8048S043 (ESP32-S3, 4.3" 800x480). A Project Moon Pi project.
+// Board: Sunton ESP32-8048S043 (ESP32-S3, 4.3" 800x480). Designed and Created by Project Moon Pi.
 
 #include <Arduino.h>
 #include <Preferences.h>
@@ -85,7 +85,7 @@ void handleRoot() {
                   "button{margin-top:14px;padding:10px 22px;border:0;border-radius:8px;background:#46ff78;color:#040a1c;font-weight:700}"
                   ".dim{color:#8a9abb}a{color:#46ff78}</style></head><body><main>"
                   "<header><img src=/logo.jpg width=72 height=72 alt='Project Moon Pi'><div><h1>SkyScope Satellite</h1>"
-                  "<div class=dim>A Project Moon Pi project</div></div></header>");
+                  "<div class=dim>Designed and Created by Project Moon Pi</div></div></header>");
   page += F("<section><h2>SkyScope Pi</h2><form method=post action=/save>"
             "<label>Address<input name=host value='");
   page += htmlEscape(g_host);
