@@ -12,7 +12,7 @@ settings page and every Satellite follows.
 
 ![Satellite screen: Phoenix Sky Harbor at 25 miles with airspace, runways, SIDs and STARs](docs/images/screen.png)
 
-> **First release.** 1.0.0 builds cleanly and its screen has been checked with
+> **Early release.** 1.1.0 builds cleanly and its screen has been checked with
 > the same drawing code running on a computer (the picture above), but it has not
 > yet been run on the board itself. Please [open an issue](https://github.com/ricsne2010/skyscope-satellite/issues)
 > if something doesn't work.
@@ -33,7 +33,7 @@ settings page and every Satellite follows.
 
 ## Install
 
-**From a browser (no tools needed):** download `skyscope-satellite-1.0.0.bin` from
+**From a browser (no tools needed):** download `skyscope-satellite-1.1.0.bin` from
 the [latest release](https://github.com/ricsne2010/skyscope-satellite/releases/latest),
 open the [ESP web flasher](https://espressif.github.io/esptool-js/) in Chrome or
 Edge, connect to the board, and program the file at address **0x0**. If no port
@@ -60,6 +60,21 @@ System Options → Hostname). Each Satellite has a small web page at the address
 shown at the bottom right of its screen (`http://skyscope-sat-xxxx.local`) for
 changing the SkyScope address. Hold **BOOT** for 3 seconds to set up Wi-Fi again.
 
+## Display hardware (pins)
+
+Board revisions differ. If the screen is blank, shifted or the wrong colours,
+or touch doesn't respond, set the wiring on the **Display hardware** page
+(`http://skyscope-sat-xxxx.local/hardware`) without rebuilding anything:
+
+- the 16 RGB data lines, DE/VSYNC/HSYNC/PCLK and the backlight pin
+- pixel clock, porches, sync polarities
+- touch chip (GT911 or none), its pins and address
+
+With a blank screen, hold **BOOT 3 s** and let go to start Wi-Fi setup, join
+**SkyScope-Satellite-Setup**, and press **Display hardware** there. Pins are checked before saving
+(GPIO 1–21 or 38–48, no duplicates). **Hold BOOT 10 s**, or press *Restore
+defaults*, to go back to the ESP32-8048S043 wiring.
+
 ## How it works
 
 SkyScope serves `/api/satellite` (traffic, status, card and list, positions in
@@ -74,7 +89,8 @@ Satellite does no geography: it scales, moves and draws.
 | `src/render.cpp` | Draws the screen: static layer, sweep, aircraft, labels, panel |
 | `src/scope.cpp` | Scope drawing shared with SkyScope Mini |
 | `src/device.cpp` | Splash, Wi-Fi setup, BOOT button, mDNS |
-| `include/board.h` | The board's pin map (check it if your board revision differs) |
+| `include/board.h`, `board_pins.h` | The display driver and its default wiring |
+| `src/hardware.cpp` | The Display hardware page; the wiring saved in flash |
 | `include/shapes.h` | Aircraft silhouettes, generated from SkyScope by `tools/gen_shapes.py` |
 | `tools/preview/` | Builds the drawing code on a computer and renders a frame to an image |
 

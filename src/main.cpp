@@ -13,11 +13,12 @@
 
 #include "board.h"
 #include "device.h"
+#include "hardware.h"
 #include "feed.h"
 #include "logo.h"
 #include "render.h"
 
-#define SKYSCOPE_SAT_VERSION "1.0.0"
+#define SKYSCOPE_SAT_VERSION "1.1.0"
 
 namespace {
 
@@ -97,7 +98,7 @@ void handleRoot() {
             " &middot; this display: ");
   page += htmlEscape(String(g_mdnsName) + ".local (" + device::address() + ")");
   page += F("</p><p><a href='https://github.com/ricsne2010/skyscope-satellite'>github.com/ricsne2010/skyscope-satellite</a></p>"
-            "<p class=dim>Hold the BOOT button for 3 seconds to set up Wi-Fi again. Not for navigation.</p></section></main></body></html>");
+            "<p class=dim>Hold the BOOT button for 3 seconds to set up Wi-Fi again (10 seconds restores the default display wiring). Board wired differently? <a href='/hardware'>Display hardware (pins)</a>. Not for navigation.</p></section></main></body></html>");
   server.send(200, "text/html", page);
 }
 
@@ -122,6 +123,7 @@ void handleLogo() {
 
 void setup() {
   Serial.begin(115200);
+  lcd.configure(hardware::load());  // the wiring saved on /hardware, or the default
   lcd.init();
   lcd.setBrightness(255);
   scope::color::init();
@@ -144,6 +146,7 @@ void setup() {
   server.on("/", HTTP_GET, handleRoot);
   server.on("/save", HTTP_POST, handleSave);
   server.on("/logo.jpg", HTTP_GET, handleLogo);
+  hardware::addRoutes(server, kProduct);
   server.begin();
 
   frame.setPsram(true);
@@ -163,7 +166,7 @@ void setup() {
 void loop() {
   static unsigned long last = 0;
   server.handleClient();
-  device::pollBootButton(lcd, wm);
+  if (device::pollBootButton(lcd, wm)) return;  // its instructions are on screen
   if (millis() - last >= kFrameMs) {
     last = millis();
     feed::lock();
