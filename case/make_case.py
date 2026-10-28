@@ -47,8 +47,12 @@ DEPTH, BACK_H = 102.0, 84.0     # base depth; height of the back wall
 CLEAR = 0.3                     # fit clearance per side for printed parts
 LEDGE_TEXT = "SKYSCOPE  SATELLITE"   # engraved on the desk ledge ("SKYSCOPE  MINI" for a Mini)
 
-# M3 screws: self-tapping into plastic (or heat-set inserts: enlarge PILOT to 4.0)
-PILOT, CLEARANCE, HEAD = 2.6, 3.4, 6.4
+# M3 screws into brass heat-set inserts (M3 x 4 mm long, about 5 mm across;
+# most makers ask for a 4.0 mm hole: check yours). To screw straight into the
+# plastic instead, set INSERT_D = 2.6.
+INSERT_D = 4.0                  # hole for the insert
+STANDOFF_D = 8.0                # bezel standoffs: room around a hot insert
+CLEARANCE, HEAD = 3.4, 6.4      # screw clearance hole; countersunk head
 
 FONT = next((f for f in ["/System/Library/Fonts/Supplemental/Arial Bold.ttf",
                          "/Applications/FreeCAD.app/Contents/Resources/fonts/DejaVuSans.ttf"]
@@ -167,7 +171,7 @@ for side in (-1, 1):
         body = body.fuse(panel(gusset))
         SCREWS.append((side * (WI / 2 - 4), (u0 + u1) / 2))
 for sx, sy in SCREWS:
-    body = body.cut(panel(cyl(PILOT / 2, 11, sx, sy, -PANEL_T - 11)))
+    body = body.cut(panel(cyl(INSERT_D / 2, 11, sx, sy, -PANEL_T - 11)))
 
 # Back opening, and bosses for the cover's screws.
 OPEN_Z0, OPEN_Z1 = 10.0, BACK_H - 10.0
@@ -177,7 +181,7 @@ COVER_HOLES = [(sy * (W / 2 - 7.5), z) for sy in (-1, 1) for z in (OPEN_Z0 + 6, 
 for y, z in COVER_HOLES:
     boss = cyl(4.5, 9, DEPTH - WALL, y, z, V(-1, 0, 0))
     body = body.fuse(boss)
-    body = body.cut(cyl(PILOT / 2, 12, DEPTH + 1, y, z, V(-1, 0, 0)))
+    body = body.cut(cyl(INSERT_D / 2, 12, DEPTH + 1, y, z, V(-1, 0, 0)))
 body = body.cut(box(DEPTH - WALL - 1, DEPTH + 1, -WI / 2 + 9, WI / 2 - 9, OPEN_Z0, OPEN_Z1))
 
 # Radar rings and a sweep line on both sides; the name on the desk ledge.
@@ -220,8 +224,9 @@ bcx, bcy = 0.0, B0 + BH / 2
 for sx in (-1, 1):
     for sy in (-1, 1):
         hx, hy = bcx + sx * HOLE_DX, bcy + sy * HOLE_DY
-        bez = bez.fuse(cyl(3.2, LCD_T, hx, hy, -PANEL_T - LCD_T))
-        bez = bez.cut(cyl(PILOT / 2, LCD_T + PANEL_T - 1.0, hx, hy, -PANEL_T - LCD_T - 0.01))
+        bez = bez.fuse(cyl(STANDOFF_D / 2, LCD_T, hx, hy, -PANEL_T - LCD_T))
+        # Leaves 1.2 mm of panel in front: press the insert in only flush with the standoff's top.
+        bez = bez.cut(cyl(INSERT_D / 2, LCD_T + PANEL_T - 1.2, hx, hy, -PANEL_T - LCD_T - 0.01))
 # Countersunk screws into the console's corner pads: a console-panel look.
 for sx, sy in SCREWS:
     bez = bez.cut(cyl(CLEARANCE / 2, PANEL_T + 1, sx, sy, -PANEL_T - 0.5))

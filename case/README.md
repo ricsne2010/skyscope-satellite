@@ -59,17 +59,27 @@ console with a contrasting bezel looks the part.
 
 | Qty | Part | For |
 |---|---|---|
+| 12 | M3 brass heat-set inserts, 4 mm long, about 5 mm across | All screw points |
 | 4 | M3 × 6 pan-head screws | Board to the bezel's standoffs |
 | 4 | M3 × 8 countersunk screws | Bezel to the console (visible panel screws) |
-| 4 | M3 × 8 countersunk screws | Back cover |
+| 4 | M3 × 6 countersunk screws | Back cover |
 | 4 | Small rubber feet | Optional, under the console |
 
-The screw holes are sized for self-tapping into plastic (2.6 mm). For
-heat-set inserts instead, set `PILOT = 4.0` and regenerate.
+The insert holes are 4.0 mm, which most M3 inserts of that size ask for.
+Check the maker's recommended hole for yours and set `INSERT_D` to match.
+To screw straight into the plastic instead, set `INSERT_D = 2.6`.
+
+**Fitting the inserts** (a soldering iron with an insert tip, about 220 °C
+for PLA or 245 °C for PETG): press each one in straight until it's flush.
+
+- **Bezel:** the four standoffs on the back. Stop at flush: there's only
+  1.2 mm of panel in front of each hole.
+- **Console:** the four holes in the front recess's corners, and the four
+  holes in the back frame.
 
 ## Assembly
 
-1. Screw the board to the back of the bezel (glass against the bezel, into
+1. Fit the 12 inserts (above). Then screw the board to the back of the bezel (glass against the bezel, into
    the corner guides). If the glass rattles, a strip of foam tape takes up
    the gap; if the board won't reach the standoffs, `LCD_T` is too small.
 2. Plug in the USB-C cable. A right-angle plug fits best; there's 12 mm of
