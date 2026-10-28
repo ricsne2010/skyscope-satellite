@@ -18,7 +18,7 @@
 #include "logo.h"
 #include "render.h"
 
-#define SKYSCOPE_SAT_VERSION "1.1.1"
+#define SKYSCOPE_SAT_VERSION "1.1.2"
 
 namespace {
 
